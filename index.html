@@ -87,25 +87,7 @@
             background: linear-gradient(180deg, #fafcff 0%, #ffffff 70%);
         }
 
-        /* Fixed bottom bar (mobile) */
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid #e7edf4;
-            padding: 12px 16px;
-            z-index: 100;
-            display: none;
-        }
 
-        @media (max-width: 859px) {
-            .bottom-bar {
-                display: block;
-            }
-        }
 
         /* Scroll to top button */
         .scroll-top {
@@ -201,6 +183,25 @@
             font-size: 13px;
             margin: 0;
         }
+
+        /* Testimonials carousel */
+        .t-wrap{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px}
+        .t-track{overflow:hidden;min-height:140px}
+        .t-slide{min-height:140px;padding:20px;border:1px solid #e7edf4;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(2,12,27,.06)}
+        .t-quote{margin:0 0 10px}
+        .t-meta{opacity:.75;font-weight:600}
+        .t-nav{width:40px;height:40px;border-radius:50%;border:1px solid #e7edf4;background:#fff}
+        .t-nav:hover{transform:translateY(-1px)}
+        .t-dots{display:flex;gap:6px;justify-content:center;margin-top:10px}
+        .t-dot{width:8px;height:8px;border-radius:50%;background:#d7e3ec;transition:opacity .2s}
+        .t-dot.active{background:#2a7bb5}
+
+        /* FAQ accordion */
+        .faq-item{border:1px solid #e7edf4;border-radius:12px;background:#fff;margin:10px 0}
+        .faq-q{width:100%;text-align:left;background:transparent;border:0;padding:14px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+        .faq-a{padding:0 16px 14px 16px}
+        .faq-item.open .faq-plus{transform:rotate(45deg); transition:transform .2s}
+        .faq-plus{display:inline-block;transition:transform .2s}
 
         /* Credentials grid */
         .credentials-grid {
@@ -1055,7 +1056,6 @@
                                     <li>✓ <span data-token="experience">15+ years</span> of clinical experience</li>
                                     <li>✓ Convenient clinic location in <span data-token="location">Central London</span></li>
                                 </ul>
-                                <a href="#contact" class="btn btn-primary">Book a Consultation</a>
                             </div>
                         </div>
                     </div>
@@ -1071,21 +1071,15 @@
                 </div>
             </section>
             
-            <section id="testimonials" class="section alt">
+            <section id="what-patients-say" class="section">
                 <div class="container">
-                    <div class="section-head">
-                        <h2>What Patients Say</h2>
+                    <div class="section-head"><h2>What Patients Say</h2></div>
+                    <div class="t-wrap">
+                        <button class="t-nav prev" aria-label="Previous review">‹</button>
+                        <div id="t-track" class="t-track" aria-live="polite"></div>
+                        <button class="t-nav next" aria-label="Next review">›</button>
                     </div>
-                    <div id="testimonials-list" class="t-grid" aria-live="polite" aria-busy="false">
-                        <article class="t-card reveal">
-                            <p class="quote">"Professional and kind throughout my visit."</p>
-                            <p class="meta">★★★★★ — Sarah W.</p>
-                        </article>
-                        <article class="t-card reveal">
-                            <p class="quote">"Explained everything clearly and put me at ease."</p>
-                            <p class="meta">★★★★★ — James L.</p>
-                        </article>
-                    </div>
+                    <div class="t-dots" aria-hidden="true"></div>
                 </div>
             </section>
             
@@ -1191,7 +1185,9 @@
                                 <svg class="c-icon" viewBox="0 0 24 24" width="16" height="16">
                                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                                 </svg>
-                                <span data-token="address">{{ADDRESS}}</span>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ADDRESS}}" target="_blank" rel="noopener">
+                                    <span data-token="address">{{ADDRESS}}</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1222,12 +1218,7 @@
                 </div>
             </div>
 
-            <!-- Fixed bottom bar (mobile) -->
-            <div id="bottom-bar" class="bottom-bar">
-                <a href="#contact" class="btn btn-primary">
-                    <span data-token="cta">Book Appointment</span>
-                </a>
-            </div>
+
 
             <!-- Scroll to top button -->
             <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">
@@ -1324,6 +1315,12 @@
             const mapLink = document.getElementById('mapLink');
             if (mapLink && data.address) {
                 mapLink.href = 'https://maps.google.com/?q=' + encodeURIComponent(data.address);
+            }
+
+            // ===== UPDATE CONTACT ADDRESS LINK =====
+            const contactAddressLink = document.querySelector('.contact-item a[href*="google.com/maps"]');
+            if (contactAddressLink && data.address) {
+                contactAddressLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(data.address);
             }
 
             // ===== UPDATE SEO META TAGS =====
@@ -1464,15 +1461,14 @@
                 const faqs = parseFAQ();
                 faqList.innerHTML = faqs.map((faq, index) => {
                     const panelId = `faq-panel-${index + 1}`;
-                    const isOpen = index === 0;
                     return `
-                        <details class="faq-item" ${isOpen ? 'open' : ''}>
-                            <summary class="faq-q" aria-expanded="${isOpen}" aria-controls="${panelId}">
-                                ${faq.question}
-                                <span class="faq-plus" aria-hidden="true">+</span>
-                            </summary>
-                            <div id="${panelId}" class="faq-a" role="region" aria-labelledby="faq-q-${index + 1}">${faq.answer}</div>
-                        </details>
+                        <div class="faq-item">
+                            <button class="faq-q" aria-expanded="false" aria-controls="${panelId}">
+                                <span class="faq-q-text">${faq.question}</span>
+                                <span class="faq-plus" aria-hidden="true">＋</span>
+                            </button>
+                            <div id="${panelId}" class="faq-a" hidden>${faq.answer}</div>
+                        </div>
                     `;
                 }).join('');
 
