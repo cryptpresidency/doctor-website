@@ -7,8 +7,8 @@
     <link rel="canonical" href="">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <title><span id="dr-name"></span> - <span id="specialty"></span></title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Dr Alex Morgan — General Practitioner</title>
 
     <!-- Open Graph -->
     <meta property="og:title" content="">
@@ -22,6 +22,22 @@
     <meta name="twitter:title" content="">
     <meta name="twitter:description" content="">
     <meta name="twitter:image" content="">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Physician",
+        "name": "{{DR_NAME}}",
+        "medicalSpecialty": "{{SPECIALTY}}",
+        "telephone": "{{PHONE}}",
+        "email": "{{EMAIL}}",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "{{ADDRESS}}"
+        },
+        "url": "{{CTA_URL}}"
+    }
+    </script>
     <style>
         :root {
             --bg: #ffffff;
@@ -46,11 +62,12 @@
 
         html {
             font-size: 16px;
+            scroll-behavior: smooth;
         }
 
         body {
             margin: 0;
-            font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            font-family: Lato, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
             background: var(--bg);
             color: var(--ink);
         }
@@ -62,24 +79,205 @@
         }
 
         section {
-            padding: 56px 0;
+            padding: 72px 0;
             border-top: 1px solid #eef2f7;
+        }
+
+        .section.alt {
+            background: linear-gradient(180deg, #fafcff 0%, #ffffff 70%);
+        }
+
+        /* Fixed bottom bar (mobile) */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e7edf4;
+            padding: 12px 16px;
+            z-index: 100;
+            display: none;
+        }
+
+        @media (max-width: 859px) {
+            .bottom-bar {
+                display: block;
+            }
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 99;
+            transition: all 0.2s ease;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .scroll-top.show {
+            display: flex;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast-icon {
+            fill: currentColor;
+        }
+
+        /* Conditions pills */
+        .conditions-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
+        }
+
+        .pill:hover,
+        .pill:focus {
+            background: #e2e8f0;
+        }
+
+        .pill:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .conditions-note {
+            font-size: 13px;
+            margin: 0;
+        }
+
+        /* Credentials grid */
+        .credentials-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .credentials-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .cred-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e7edf4;
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cred-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(3,7,18,.12);
+        }
+
+        .cred-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #eaf4fb 0%, #f1f8ff 100%);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .cred-icon svg {
+            fill: var(--primary);
+        }
+
+        .cred-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: var(--ink);
+        }
+
+        .cred-card p {
+            font-size: 14px;
+            color: var(--muted);
+            margin: 0;
         }
 
         #hero {
             border-top: 0;
+            padding-top: 0;
+        }
+
+        #hero::before {
+            display: none;
         }
 
         h1 {
-            font-size: clamp(28px, 5vw, 44px);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 52px);
         }
 
         h2 {
-            font-size: clamp(18px, 3vw, 24px);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 3.2vw, 30px);
         }
 
         p, li {
-            font-size: clamp(15px, 2.2vw, 17px);
+            font-size: clamp(15px, 1.2vw, 17px);
         }
 
         .muted {
@@ -200,17 +398,20 @@
             display: grid;
             place-items: center;
             color: #0d1b2a;
+            background: var(--hero-bg) center/cover no-repeat;
         }
 
-        .hero-bg {
+        .hero::before {
+            content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(255,255,255,.85), rgba(255,255,255,.98)), url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
-            filter: saturate(105%) contrast(102%);
+            background: linear-gradient(to bottom, rgba(255,255,255,.85), rgba(255,255,255,.98));
+            z-index: 0;
         }
 
         .hero-inner {
             position: relative;
+            z-index: 1;
             text-align: center;
             padding: 56px 16px;
         }
@@ -265,12 +466,23 @@
         }
 
         .section {
-            padding: 56px 0;
+            padding: 72px 0;
+            position: relative;
+        }
+
+        .section:not(:first-child)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e7edf4, transparent);
         }
 
         .section-head h2 {
             font-size: clamp(22px, 3.2vw, 28px);
-            margin: 0 0 18px;
+            margin: 0 0 24px;
         }
 
         .s-grid {
@@ -290,6 +502,13 @@
             border-radius: 14px;
             padding: 18px;
             box-shadow: 0 8px 24px rgba(2,12,27,.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .s-card:hover,
+        .s-card:focus-within {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(2,12,27,.12);
         }
 
         .s-top {
@@ -448,6 +667,13 @@
             border-radius: var(--radius);
             padding: var(--space-5);
             box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover,
+        .card:focus-within {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(3,7,18,.12);
         }
 
         .section-head {
@@ -466,6 +692,71 @@
         .section-sub {
             color: var(--muted);
             margin: 0 0 var(--space-4);
+        }
+
+        /* About section */
+        #about {
+            background: #f9fafb;
+        }
+
+        .about-split {
+            display: grid;
+            gap: var(--space-5);
+            align-items: center;
+        }
+
+        @media (min-width: 900px) {
+            .about-split {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .about-image {
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-img-placeholder {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            background: linear-gradient(135deg, #e7edf4 0%, #f1f5f9 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .about-img-placeholder::before {
+            content: "👨‍⚕️";
+            font-size: 48px;
+            opacity: 0.6;
+        }
+
+        .about-content .card {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: var(--space-5);
+        }
+
+        .about-highlights {
+            list-style: none;
+            padding: 0;
+            margin: var(--space-4) 0;
+        }
+
+        .about-highlights li {
+            margin: var(--space-2) 0;
+            padding: var(--space-2) 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-weight: 600;
+        }
+
+        .about-highlights li:last-child {
+            border-bottom: none;
         }
 
         /* Two-column layout for Services on desktop */
@@ -550,6 +841,13 @@
             border-radius: var(--radius);
             padding: 20px;
             box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .t-card:hover,
+        .t-card:focus-within {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(2,12,27,.12);
         }
 
         .t-quote {
@@ -627,6 +925,11 @@
             .container {
                 padding: var(--space-3);
             }
+            
+            .section {
+                padding: 48px 0;
+            }
+        }
             
             .hero {
                 padding: 32px 16px;
@@ -706,7 +1009,7 @@
         </div>
         <div class="tw-sub muted">Preparing your page…</div>
     </div>
-    <a href="#main" class="skip">Skip to content</a>
+    <a href="#hero-title" class="skip">Skip to content</a>
     <header>
         <div class="container header-row">
             <div class="brand">
@@ -727,12 +1030,34 @@
             <section id="hero" class="hero">
                 <div class="hero-bg" role="img" aria-label="Clinic hero image"></div>
                 <div class="hero-inner container">
-                    <h1 id="dr-name" class="hero-title"><span data-token="name">{{DR_NAME}}</span></h1>
-                    <p id="specialty" class="hero-sub"><span data-token="specialty">{{SPECIALTY}}</span></p>
-                    <p id="tagline" class="hero-tag"><span data-token="tagline">{{TAGLINE}}</span></p>
+                    <h1 id="hero-title" class="hero-title"><span data-token="name">Dr Alex Morgan</span></h1>
+                    <p id="specialty" class="hero-sub"><span data-token="specialty">General Practitioner</span></p>
+                    <p id="tagline" class="hero-tag"><span data-token="tagline">Same-day, trusted care</span></p>
                     <div class="hero-cta">
-                        <a id="cta" class="btn btn-primary" href="#contact"><span data-token="cta">{{CTA_LABEL}}</span></a>
+                        <a id="cta" class="btn btn-primary" href="#contact"><span data-token="cta">Book Appointment</span></a>
                         <a class="btn btn-ghost" href="#faq">FAQs</a>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="about" class="section">
+                <div class="container">
+                    <div class="about-split">
+                        <div class="about-image">
+                            <div class="about-img-placeholder" role="img" aria-label="Doctor portrait"></div>
+                        </div>
+                        <div class="about-content">
+                            <div class="card">
+                                <h2>About <span data-token="name">Dr Alex Morgan</span></h2>
+                                <p>Experienced healthcare professional dedicated to providing personalised care and treatment. With a focus on patient-centred medicine, I ensure each consultation addresses your specific health needs with compassion and expertise.</p>
+                                <ul class="about-highlights">
+                                    <li>✓ GMC registered medical practitioner</li>
+                                    <li>✓ <span data-token="experience">15+ years</span> of clinical experience</li>
+                                    <li>✓ Convenient clinic location in <span data-token="location">Central London</span></li>
+                                </ul>
+                                <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -747,27 +1072,24 @@
             </section>
             
             <section id="testimonials" class="section alt">
-                <h2>What Patients Say</h2>
-                <div class="t-grid">
-                    <article class="t-card reveal">
-                        <p class="quote">"Professional and kind throughout my visit."</p>
-                        <p class="meta">★★★★★ — Sarah W.</p>
-                    </article>
-                    <article class="t-card reveal">
-                        <p class="quote">"Explained everything clearly and put me at ease."</p>
-                        <p class="meta">★★★★★ — James L.</p>
-                    </article>
+                <div class="container">
+                    <div class="section-head">
+                        <h2>What Patients Say</h2>
+                    </div>
+                    <div id="testimonials-list" class="t-grid" aria-live="polite" aria-busy="false">
+                        <article class="t-card reveal">
+                            <p class="quote">"Professional and kind throughout my visit."</p>
+                            <p class="meta">★★★★★ — Sarah W.</p>
+                        </article>
+                        <article class="t-card reveal">
+                            <p class="quote">"Explained everything clearly and put me at ease."</p>
+                            <p class="meta">★★★★★ — James L.</p>
+                        </article>
+                    </div>
                 </div>
             </section>
             
-            <section id="faq" class="section">
-                <div class="container">
-                    <div class="section-head">
-                        <h2>FAQs</h2>
-                    </div>
-                    <div id="faq-list" class="faq"></div>
-                </div>
-            </section>
+
             
             <section id="credentials-card" class="section">
                 <div class="container">
@@ -775,9 +1097,35 @@
                         <div class="section-head">
                             <h2>Credentials</h2>
                         </div>
-                        <ul id="credentials">
-                            {{CREDENTIALS_LIST}}
-                        </ul>
+                        <div class="credentials-grid">
+                            <div class="cred-card">
+                                <div class="cred-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                                    </svg>
+                                </div>
+                                <h3>GMC Registered</h3>
+                                <p>Licence verified</p>
+                            </div>
+                            <div class="cred-card">
+                                <div class="cred-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                                    </svg>
+                                </div>
+                                <h3>15+ Years Experience</h3>
+                                <p>Across primary care</p>
+                            </div>
+                            <div class="cred-card">
+                                <div class="cred-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                                    </svg>
+                                </div>
+                                <h3>Same-day Appointments</h3>
+                                <p>Subject to availability</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -788,42 +1136,26 @@
                         <div class="section-head">
                             <h2>Conditions Treated</h2>
                         </div>
-                        <ul id="conditions"></ul>
+                        <div class="conditions-pills">
+                            <span class="pill">Back pain</span>
+                            <span class="pill">Anxiety</span>
+                            <span class="pill">Skin rashes</span>
+                            <span class="pill">Headaches</span>
+                            <span class="pill">Diabetes review</span>
+                            <span class="pill">Hypertension</span>
+                            <span class="pill">Women's health</span>
+                            <span class="pill">Men's health</span>
+                        </div>
+                        <p class="conditions-note muted">This list is illustrative and will be customised by AI.</p>
                     </div>
                 </div>
             </section>
             
-            <section id="appointments-card" class="section">
-                <div class="container">
-                    <div class="card">
-                        <div class="section-head">
-                            <h2>Appointments & Fees</h2>
-                        </div>
-                        <div class="appointment-options">
-                            <strong>Appointment options:</strong>
-                            <div id="modes-badges"></div>
-                        </div>
-                        <div class="fee-info">
-                            <strong>Fees from:</strong> <span id="feeFrom"></span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
             
-            <section id="testimonials" class="section">
-                <div class="container">
-                    <div class="card">
-                        <div class="section-head">
-                            <h2>Testimonials</h2>
-                        </div>
-                        <div id="testimonials-list" class="t-grid" aria-live="polite" aria-busy="false">
-                            <!-- Items will be injected here -->
-                        </div>
-                    </div>
-                </div>
-            </section>
+
             
-            <section id="faq" class="section">
+            <section id="faq" class="section alt">
                 <div class="container">
                     <div class="card">
                         <div class="section-head">
@@ -844,21 +1176,23 @@
                                 <h2>Contact</h2>
                             </div>
                             <div class="contact-item">
-                                <svg class="c-icon" viewBox="0 0 24 24" width="18" height="18">
+                                <svg class="c-icon" viewBox="0 0 24 24" width="16" height="16">
                                     <path d="M6.6 10.8c1.1 2.1 2.9 3.9 5 5l1.6-1.6c.2-.2.5-.3.8-.2 1 .3 2 .5 3.1.5.4 0 .8.3.8.8v2.5c0 .4-.3.8-.8.8C10.5 18.6 5.4 13.5 5.4 7.2c0-.4.3-.8.8-.8h2.5c.4 0 .8.3.8.8 0 1.1.2 2.1.5 3.1.1.3 0 .6-.2.8l-1.6 1.7z"/>
                                 </svg>
-                                <a id="telLink" href="#"><span id="phone">020 1234 5678</span></a>
+                                <a id="telLink" href="tel:{{PHONE}}"><span data-token="phone">{{PHONE}}</span></a>
                             </div>
                             <div class="contact-item">
-                                <svg class="c-icon" viewBox="0 0 24 24" width="18" height="18">
+                                <svg class="c-icon" viewBox="0 0 24 24" width="16" height="16">
                                     <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                                 </svg>
-                                <a id="mailLink" href="#"><span id="email">clinic@example.com</span></a>
+                                <a id="mailLink" href="mailto:{{EMAIL}}"><span data-token="email">{{EMAIL}}</span></a>
                             </div>
                             <div class="contact-item">
-                                <span id="address">123 Clinic Road, London</span>
+                                <svg class="c-icon" viewBox="0 0 24 24" width="16" height="16">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                <span data-token="address">{{ADDRESS}}</span>
                             </div>
-                        </div>
                         </div>
                     </div>
                     <div class="contact-right">
@@ -877,6 +1211,30 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Toast notification -->
+            <div id="toast" class="toast" role="alert" aria-live="polite">
+                <div class="toast-content">
+                    <svg class="toast-icon" viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Message sent successfully!</span>
+                </div>
+            </div>
+
+            <!-- Fixed bottom bar (mobile) -->
+            <div id="bottom-bar" class="bottom-bar">
+                <a href="#contact" class="btn btn-primary">
+                    <span data-token="cta">Book Appointment</span>
+                </a>
+            </div>
+
+            <!-- Scroll to top button -->
+            <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+                </svg>
+            </button>
         </div>
     </main>
     
@@ -884,11 +1242,11 @@
         <div class="container f-row">
             <div class="f-left">
                 <div class="f-brand">
-                    <strong><span id="dr-name-footer"></span></strong>
+                    <strong><span data-token="name">Dr Alex Morgan</span></strong>
                     <span class="sep">·</span>
-                    <span>GMC No:</span> <strong id="gmc"></strong>
+                    <span>GMC No:</span> <strong><span data-token="gmc">—</span></strong>
                 </div>
-                <div class="f-copy muted">© <span id="year"></span> <span id="dr-name-copy"></span>. All rights reserved.</div>
+                <div class="f-copy muted">© <span data-token="year">2025</span> <span data-token="name">Dr Alex Morgan</span>. All rights reserved.</div>
             </div>
             <nav class="f-social" aria-label="Social links">
                 <a id="igLink" class="s-btn" href="#" target="_blank" rel="noopener" aria-label="Instagram" hidden>
@@ -913,331 +1271,322 @@
 
     <script>
         (function(){
-            var addr = "{{ADDRESS}}";
-            var map = document.getElementById('mapLink');
-            if (map && addr) {
-                var q = encodeURIComponent(addr);
-                map.href = "https://maps.google.com/?q=" + q;
+            // ===== DATA SOURCING =====
+            // Priority: URLSearchParams > window.EVO_DATA > sensible defaults
+            const params = new URLSearchParams(location.search);
+            const evoData = window.EVO_DATA || {};
+            
+            function getValue(key, fallback = '') {
+                return params.get(key) || evoData[key] || fallback;
             }
-        })();
-    </script>
 
-    <script>
-        (function(){
-            // 1) Source data: window.EVO_DATA > URL params
-            var data = (window.EVO_DATA && typeof window.EVO_DATA === 'object') ? window.EVO_DATA : {};
-            if (!Object.keys(data).length) {
-                var params = new URLSearchParams(location.search);
-                ['DR_NAME','SPECIALTY','TAGLINE','ADDRESS','PHONE','EMAIL','CTA_LABEL','CTA_URL'].forEach(function(k){
-                    if (params.has(k)) data[k] = params.get(k);
+            // Core data with sensible defaults
+            const data = {
+                name: getValue('name', 'Dr Alex Morgan'),
+                specialty: getValue('specialty', 'General Practitioner'),
+                tagline: getValue('tagline', 'Same-day, trusted care'),
+                cta: getValue('cta', 'Book Appointment'),
+                phone: getValue('phone', '020 1234 5678'),
+                email: getValue('email', 'clinic@example.com'),
+                address: getValue('address', '123 Clinic Road, London'),
+                gmc: getValue('GMC') || getValue('GMC_NUMBER', '—'),
+                experience: getValue('experience', '15+ years'),
+                location: getValue('location', 'Central London')
+            };
+
+            // ===== POPULATE ALL [data-token] ELEMENTS =====
+            document.querySelectorAll('[data-token]').forEach(el => {
+                const key = el.dataset.token;
+                if (data[key]) {
+                    el.textContent = data[key];
+                }
+            });
+
+            // ===== POPULATE [data-token-href] ELEMENTS =====
+            document.querySelectorAll('[data-token-href]').forEach(el => {
+                const key = el.dataset.tokenHref;
+                if (data[key]) {
+                    el.setAttribute('href', data[key]);
+                }
+            });
+
+            // ===== UPDATE CONTACT LINKS =====
+            const telLink = document.getElementById('telLink');
+            const mailLink = document.getElementById('mailLink');
+            if (telLink && data.phone) {
+                telLink.href = 'tel:' + data.phone.replace(/\s+/g, '');
+            }
+            if (mailLink && data.email) {
+                mailLink.href = 'mailto:' + data.email;
+            }
+
+            // ===== UPDATE MAPS LINK =====
+            const mapLink = document.getElementById('mapLink');
+            if (mapLink && data.address) {
+                mapLink.href = 'https://maps.google.com/?q=' + encodeURIComponent(data.address);
+            }
+
+            // ===== UPDATE SEO META TAGS =====
+            const metaUpdates = {
+                'meta[name="description"]': data.tagline,
+                'meta[property="og:title"]': `${data.name} — ${data.specialty}`,
+                'meta[property="og:description"]': data.tagline,
+                'meta[name="twitter:title"]': `${data.name} — ${data.specialty}`,
+                'meta[name="twitter:description"]': data.tagline
+            };
+
+            Object.entries(metaUpdates).forEach(([selector, content]) => {
+                const meta = document.querySelector(selector);
+                if (meta) meta.setAttribute('content', content);
+            });
+
+            // ===== UPDATE TITLE TAG =====
+            const titleName = document.getElementById('hero-title');
+            const titleSpecialty = document.getElementById('specialty');
+            if (titleName && titleSpecialty) {
+                document.title = `${titleName.textContent} - ${titleSpecialty.textContent}`;
+            }
+
+            // ===== POPULATE LISTS =====
+            function parseList(key, fallback) {
+                // Try EVO_DATA array first
+                if (evoData[key] && Array.isArray(evoData[key])) return evoData[key];
+                // Try URL param CSV
+                const param = params.get(key);
+                if (param) return param.split(',').map(s => s.trim()).filter(Boolean);
+                return fallback;
+            }
+
+            function fillList(id, items) {
+                const ul = document.getElementById(id);
+                if (!ul) return;
+                if (items && items.length) {
+                    ul.innerHTML = items.map(item => `<li>${item}</li>`).join('');
+                } else {
+                    ul.innerHTML = items.map(item => `<li class="placeholder">${item}</li>`).join('');
+                }
+            }
+
+            fillList('credentials', parseList('CREDENTIALS', ['Board-certified', 'Member of GMC', '10+ years experience']));
+
+            // ===== POPULATE SERVICES GRID =====
+            const servicesGrid = document.getElementById('services-grid');
+            if (servicesGrid) {
+                function parseServices() {
+                    if (evoData.services && Array.isArray(evoData.services)) return evoData.services;
+                    const raw = params.get('SERVICES');
+                    if (raw) {
+                        return raw.split('|').map(s => {
+                            const [title, desc] = s.split('::');
+                            return { title: title || '', desc: desc || '' };
+                        });
+                    }
+                    return [
+                        { title: 'Initial Consultation', desc: 'A comprehensive first appointment to assess your needs.' },
+                        { title: 'Follow-up Appointment', desc: 'Ongoing care and progress reviews.' },
+                        { title: 'Video Consultation', desc: 'Convenient and secure telehealth sessions.' }
+                    ];
+                }
+
+                const services = parseServices();
+                servicesGrid.innerHTML = services.map(service => `
+                    <article class="s-card">
+                        <div class="s-top">
+                            <div class="s-icn" aria-hidden="true">💠</div>
+                            <h3 class="s-title">${service.title}</h3>
+                        </div>
+                        <p class="s-desc">${service.desc}</p>
+                    </article>
+                `).join('');
+            }
+
+            // ===== POPULATE TESTIMONIALS =====
+            const testimonialsList = document.getElementById('testimonials-list');
+            if (testimonialsList) {
+                function parseTestimonials() {
+                    if (evoData.testimonials && Array.isArray(evoData.testimonials)) return evoData.testimonials;
+                    const raw = params.get('TESTIMONIALS');
+                    if (raw) {
+                        return raw.split('|').map(chunk => {
+                            const parts = chunk.split(' - ').map(p => p.trim());
+                            return {
+                                quote: parts[0] || '',
+                                name: parts[1] || 'Patient',
+                                rating: parseInt(parts[2] || '5', 10) || 5
+                            };
+                        }).filter(t => t.quote);
+                    }
+                    return [
+                        { quote: 'Professional and kind throughout my visit.', name: 'Sarah W.', rating: 5 },
+                        { quote: 'Explained everything clearly and put me at ease.', name: 'James L.', rating: 5 }
+                    ];
+                }
+
+                const testimonials = parseTestimonials();
+                testimonialsList.setAttribute('aria-busy', 'true');
+                testimonialsList.innerHTML = testimonials.map(t => {
+                    const stars = '★★★★★'.slice(0, Math.max(0, Math.min(5, t.rating || 5)));
+                    return `
+                        <article class="t-card" role="article">
+                            <p class="t-quote">"${t.quote || ''}"</p>
+                            <div class="t-meta">
+                                <span class="t-stars" aria-label="${t.rating || 5} out of 5 stars">${stars}</span>
+                                <span>·</span>
+                                <span>${t.name || 'Patient'}</span>
+                            </div>
+                        </article>
+                    `;
+                }).join('');
+                testimonialsList.setAttribute('aria-busy', 'false');
+            }
+
+            // ===== POPULATE FAQ =====
+            const faqList = document.getElementById('faq-list');
+            if (faqList) {
+                function parseFAQ() {
+                    if (evoData.faq && Array.isArray(evoData.faq)) return evoData.faq;
+                    const raw = params.get('FAQ');
+                    if (raw) {
+                        return raw.split('|').map(chunk => {
+                            const parts = chunk.split('::').map(p => p.trim());
+                            return { question: parts[0] || '', answer: parts[1] || '' };
+                        }).filter(f => f.question);
+                    }
+                    return [
+                        { question: 'What should I bring to my first appointment?', answer: 'Please bring your ID, insurance information, and any relevant medical records or test results.' },
+                        { question: 'How long does a typical consultation take?', answer: 'Initial consultations usually take 30-45 minutes, while follow-up appointments are typically 15-20 minutes.' },
+                        { question: 'Do you offer video consultations?', answer: 'Yes, we offer secure video consultations for your convenience. You\'ll receive a link before your appointment.' },
+                        { question: 'What are your fees?', answer: 'Initial consultation from £, follow-up from £, video from £___ (placeholders).' },
+                        { question: 'How do I book an appointment?', answer: 'Use the form below or call 020 1234 5678; you\'ll receive confirmation by email.' }
+                    ];
+                }
+
+                const faqs = parseFAQ();
+                faqList.innerHTML = faqs.map((faq, index) => {
+                    const panelId = `faq-panel-${index + 1}`;
+                    const isOpen = index === 0;
+                    return `
+                        <details class="faq-item" ${isOpen ? 'open' : ''}>
+                            <summary class="faq-q" aria-expanded="${isOpen}" aria-controls="${panelId}">
+                                ${faq.question}
+                                <span class="faq-plus" aria-hidden="true">+</span>
+                            </summary>
+                            <div id="${panelId}" class="faq-a" role="region" aria-labelledby="faq-q-${index + 1}">${faq.answer}</div>
+                        </details>
+                    `;
+                }).join('');
+
+                // FAQ accordion functionality with ARIA updates
+                faqList.addEventListener('click', (e) => {
+                    if (e.target.closest('.faq-q')) {
+                        const details = e.target.closest('.faq-item');
+                        const summary = details.querySelector('.faq-q');
+                        const panel = details.querySelector('.faq-a');
+                        const allDetails = faqList.querySelectorAll('.faq-item');
+                        
+                        // Update ARIA attributes
+                        const isOpen = details.hasAttribute('open');
+                        summary.setAttribute('aria-expanded', !isOpen);
+                        
+                        // Close other items
+                        allDetails.forEach(d => {
+                            if (d !== details) {
+                                d.removeAttribute('open');
+                                const otherSummary = d.querySelector('.faq-q');
+                                otherSummary.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                    }
                 });
             }
 
-            // 2) Swap text tokens
-            document.querySelectorAll('[data-token]').forEach(function(el){
-                var key = el.getAttribute('data-token');
-                if (data[key]) el.textContent = data[key];
-            });
+            // ===== UPDATE FOOTER =====
+            const yearEl = document.querySelector('[data-token="year"]');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-            // 3) Swap href tokens
-            document.querySelectorAll('[data-token-href]').forEach(function(el){
-                var key = el.getAttribute('data-token-href');
-                if (data[key]) el.setAttribute('href', data[key]);
-            });
-
-            // 4) Refresh the maps link if ADDRESS changed
-            var addr = data.ADDRESS || (document.querySelector('[data-token="ADDRESS"]')?.textContent || '');
-            var map = document.getElementById('mapLink');
-            if (map && addr) {
-                map.href = "https://maps.google.com/?q=" + encodeURIComponent(addr);
-            }
-        })();
-    </script>
-
-    <script>
-        (function(){
-            function parseList(key){
-                // 1) EVO_DATA array
-                if (window.EVO_DATA && Array.isArray(window.EVO_DATA[key])) return window.EVO_DATA[key];
-                // 2) URL param CSV
-                var p = new URLSearchParams(location.search).get(key);
-                if (p) return p.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
-                return null;
-            }
-
-            function fillList(id, items, fallback){
-                var ul = document.getElementById(id);
-                if (!ul) return;
-                if (items && items.length){
-                    ul.innerHTML = items.map(function(t){ return '<li>'+t+'</li>'; }).join('');
-                } else {
-                    ul.innerHTML = fallback.map(function(t){ return '<li class="placeholder">'+t+'</li>'; }).join('');
+            // ===== UPDATE SOCIAL MEDIA LINKS =====
+            function setSocial(elId, key, buildUrl) {
+                const el = document.getElementById(elId);
+                if (!el) return;
+                const raw = getValue(key);
+                if (!raw) {
+                    el.hidden = true;
+                    return;
                 }
+                const url = /^https?:\/\//i.test(raw) ? raw : buildUrl(raw.replace(/^@/, ''));
+                el.href = url;
+                el.hidden = false;
             }
 
-            fillList('services',    parseList('SERVICES'),    ['General consultation','Health check','Follow-up visit']);
-            fillList('credentials', parseList('CREDENTIALS'), ['Board-certified','Member of GMC','10+ years experience']);
-        })();
-    </script>
+            setSocial('igLink', 'IG', h => 'https://instagram.com/' + h);
+            setSocial('xLink', 'X', h => 'https://twitter.com/' + h);
+            setSocial('fbLink', 'FB', h => 'https://facebook.com/' + h);
+            setSocial('liLink', 'LI', h => 'https://linkedin.com/in/' + h);
 
-    <script>
-        (function(){
-            // Set hero background if BG_URL is provided
-            var bgUrl = (window.EVO_DATA && window.EVO_DATA.BG_URL) ? window.EVO_DATA.BG_URL : new URLSearchParams(location.search).get('BG_URL');
+            // ===== HERO BACKGROUND =====
+            const bgUrl = getValue('BG_URL') || getValue('hero');
             if (bgUrl) {
-                document.documentElement.style.setProperty('--hero-bg', "url('" + bgUrl + "')");
-                document.getElementById('hero').classList.add('has-bg');
+                document.documentElement.style.setProperty('--hero-bg', `url('${bgUrl}')`);
+                const hero = document.getElementById('hero');
+                if (hero) hero.classList.add('has-bg');
             }
-        })();
-    </script>
 
-    <script>
-        (function(){
-            // Read URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            // Map of parameter names to element IDs with fallbacks
-            const paramMap = {
-                'name': { id: 'dr-name', fallback: 'Dr Alex Morgan' },
-                'specialty': { id: 'specialty', fallback: 'General Practitioner' },
-                'tagline': { id: 'tagline', fallback: 'Same-day, trusted care' },
-                'cta': { id: 'cta-label', fallback: 'Book Appointment' },
-                'address': { id: 'address', fallback: '' },
-                'phone': { id: 'phone', fallback: '' },
-                'email': { id: 'email', fallback: '' }
-            };
-            
-            // Update text content for each parameter
-            Object.keys(paramMap).forEach(param => {
-                const value = urlParams.get(param);
-                const elementId = paramMap[param].id;
-                const fallback = paramMap[param].fallback;
-                const element = document.getElementById(elementId);
+            // ===== TYPEWRITER LOADER =====
+            const twName = document.getElementById('tw-name');
+            const loader = document.getElementById('evo-loader');
+            if (twName && loader) {
+                const baseName = data.name.replace(/^Dr\.?\s+/i, '').trim();
+                const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                 
-                if (element) {
-                    element.textContent = value || fallback;
-                }
-            });
-            
-            // Update href attributes for phone and email links
-            const phone = urlParams.get('phone');
-            const email = urlParams.get('email');
-            
-            if (phone) {
-                const telLink = document.getElementById('telLink');
-                if (telLink) {
-                    telLink.href = 'tel:' + phone;
-                }
-            }
-            
-            if (email) {
-                const mailLink = document.getElementById('mailLink');
-                if (mailLink) {
-                    mailLink.href = 'mailto:' + email;
+                if (reduced) {
+                    twName.textContent = baseName;
+                    setTimeout(() => loader.classList.add('hidden'), 250);
+                } else {
+                    let i = 0;
+                    const speed = 35;
+                    function type() {
+                        if (i < baseName.length) {
+                            twName.textContent += baseName.charAt(i++);
+                            setTimeout(type, speed);
+                        } else {
+                            setTimeout(() => loader.classList.add('hidden'), 250);
+                        }
+                    }
+                    setTimeout(type, 150);
                 }
             }
-            
-            // Update meta tags
-            const name = urlParams.get('name') || 'Dr Alex Morgan';
-            const specialty = urlParams.get('specialty') || 'General Practitioner';
-            const tagline = urlParams.get('tagline') || 'Same-day, trusted care';
-            
-            document.querySelector('meta[property="og:title"]').setAttribute('content', name + ' — ' + specialty);
-            document.querySelector('meta[name="twitter:title"]').setAttribute('content', name + ' — ' + specialty);
-            document.querySelector('meta[name="description"]').setAttribute('content', tagline);
-            document.querySelector('meta[property="og:description"]').setAttribute('content', tagline);
-            document.querySelector('meta[name="twitter:description"]').setAttribute('content', tagline);
-        })();
-    </script>
 
-    <script>
-        (function(){
-            // Source testimonials from window.EVO_DATA.testimonials (array of {quote, name, rating?})
-            // Fallback: URL param TESTIMONIALS as a pipe-separated list of "quote - name - rating"
-            // Example: ?TESTIMONIALS=Great%20care%20-%20Aisha%20K.%20-%205|Very%20thorough%20-%20Tom%20R.%20-%204
-
-            function parseFromParams(){
-                var s = new URLSearchParams(location.search).get('TESTIMONIALS');
-                if(!s) return null;
-                return s.split('|').map(function(chunk){
-                    var parts = chunk.split(' - ').map(function(p){ return p.trim(); });
-                    return { quote: parts[0] || '', name: parts[1] || 'Patient', rating: parseInt(parts[2] || '5', 10) || 5 };
-                }).filter(function(t){ return t.quote; });
+            // ===== CONTACT FORM =====
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', e => {
+                    e.preventDefault();
+                    const toast = document.getElementById('toast');
+                    if (toast) {
+                        toast.classList.add('show');
+                        setTimeout(() => toast.classList.remove('show'), 2200);
+                    }
+                    contactForm.reset();
+                });
             }
 
-            var list = document.getElementById('testimonials-list');
-            if(!list) return;
+            // ===== SCROLL TO TOP =====
+            const scrollTopBtn = document.getElementById('scroll-top');
+            if (scrollTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 600) {
+                        scrollTopBtn.classList.add('show');
+                    } else {
+                        scrollTopBtn.classList.remove('show');
+                    }
+                });
 
-            var items = (window.EVO_DATA && Array.isArray(window.EVO_DATA.testimonials) && window.EVO_DATA.testimonials.length)
-                ? window.EVO_DATA.testimonials
-                : parseFromParams();
-
-            // Graceful fallback if nothing provided
-            if(!items || !items.length){
-                items = [
-                    {quote:'Professional and kind throughout my visit.', name:'Sarah W.', rating:5},
-                    {quote:'Explained everything clearly and put me at ease.', name:'James L.', rating:5}
-                ];
+                scrollTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
             }
 
-            // Render
-            list.setAttribute('aria-busy','true');
-            list.innerHTML = items.map(function(t){
-                var stars = '★★★★★'.slice(0, Math.max(0, Math.min(5, t.rating || 5)));
-                return (
-                    '<article class="t-card" role="article">' +
-                        '<p class="t-quote">"' + (t.quote || '') + '"</p>' +
-                        '<div class="t-meta">' +
-                            '<span class="t-stars" aria-label="' + (t.rating || 5) + ' out of 5 stars">' + stars + '</span>' +
-                            '<span>·</span>' +
-                            '<span>' + (t.name || 'Patient') + '</span>' +
-                        '</div>' +
-                    '</article>'
-                );
-            }).join('');
-            list.setAttribute('aria-busy','false');
         })();
-    </script>
-
-    <script>
-        (function(){
-            // Year + footer name mirror
-            var y = document.getElementById('year'); if(y){ y.textContent = new Date().getFullYear(); }
-            var nameEl = document.getElementById('dr-name'); // already on hero
-            var nameFooter = document.getElementById('dr-name-footer');
-            var nameCopy = document.getElementById('dr-name-copy');
-            if(nameFooter && nameEl){ nameFooter.textContent = nameEl.textContent || ''; }
-            if(nameCopy && nameEl){ nameCopy.textContent = nameEl.textContent || ''; }
-
-            // Read data from window.EVO_DATA or URL params
-            var params = new URLSearchParams(location.search);
-            function get(k){ 
-                if (window.EVO_DATA && window.EVO_DATA[k]) return window.EVO_DATA[k]; 
-                return params.get(k) || '';
-            }
-
-            // GMC number
-            var gmc = document.getElementById('gmc');
-            var gmcVal = get('GMC') || get('GMC_NUMBER') || '';
-            if(gmc){ gmc.textContent = gmcVal || '—'; }
-
-            // Socials: accept full URLs OR handles; hide if missing
-            function setSocial(elId, key, toUrl){
-                var el = document.getElementById(elId); if(!el) return;
-                var raw = get(key);
-                if(!raw){ el.hidden = true; return; }
-                var url = raw;
-                if(!/^https?:\/\//i.test(raw)){ url = toUrl(raw); } // build from handle
-                el.href = url; el.hidden = false;
-            }
-            setSocial('igLink', 'IG',  function(h){ return 'https://instagram.com/' + h.replace(/^@/,''); });
-            setSocial('xLink',  'X',   function(h){ return 'https://twitter.com/'   + h.replace(/^@/,''); });
-            setSocial('fbLink', 'FB',  function(h){ return 'https://facebook.com/'  + h.replace(/^@/,''); });
-            setSocial('liLink', 'LI',  function(h){ return 'https://linkedin.com/in/'+ h.replace(/^@/,''); });
-        })();
-    </script>
-
-    <script>
-        (function(){
-            // Determine the name
-            var params = new URLSearchParams(location.search);
-            var urlName = params.get('name') || '';
-            var heroNameEl = document.getElementById('dr-name');
-            var baseName = (urlName || (heroNameEl ? heroNameEl.textContent : '') || 'Your Doctor').replace(/^Dr\.?\s+/i,'').trim();
-
-            // Typewriter
-            var out = document.getElementById('tw-name');
-            var loader = document.getElementById('evo-loader');
-            if(!out || !loader) return;
-
-            var i = 0, txt = baseName, speed = 35;
-            var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if(reduced) { out.textContent = txt; hideSoon(); return; }
-
-            function type(){
-                if(i < txt.length){ out.textContent += txt.charAt(i++); setTimeout(type, speed); }
-                else { hideSoon(); }
-            }
-            function hideSoon(){ setTimeout(function(){ loader.classList.add('hidden'); }, 250); }
-
-            // Start after minimal paint
-            setTimeout(type, 150);
-        })();
-    </script>
-
-    <script>
-        (function(){
-            const p = new URLSearchParams(location.search);
-            const name = p.get('name'); if(name) document.getElementById('dr-name').textContent = name;
-            const spec = p.get('specialty'); if(spec) document.getElementById('specialty').textContent = spec;
-            const tag = p.get('tagline'); if(tag) document.getElementById('tagline').textContent = tag;
-            const heroImg = p.get('hero'); if(heroImg){ document.querySelector('.hero-bg').style.backgroundImage = `linear-gradient(to bottom, rgba(255,255,255,.85), rgba(255,255,255,.98)), url('${heroImg}')`; }
-        })();
-    </script>
-
-    <script>
-        (function(){
-            const host = document.getElementById('services-grid'); if(!host) return;
-            function fromParams(){
-                const raw = new URLSearchParams(location.search).get('SERVICES'); if(!raw) return null;
-                // Format: title::desc|title::desc|...
-                return raw.split('|').map(s => {const [t,d] = (s.split('::')); return {title: t || '', desc: d || ''}});
-            }
-            let items = (window.EVO_DATA && Array.isArray(EVO_DATA.services) && EVO_DATA.services.length) ? EVO_DATA.services : fromParams();
-            if(!items){ items = [
-                {title: 'Initial Consultation', desc: 'A comprehensive first appointment to assess your needs.'},
-                {title: 'Follow-up Appointment', desc: 'Ongoing care and progress reviews.'},
-                {title: 'Video Consultation', desc: 'Convenient and secure telehealth sessions.'}
-            ]; }
-            host.innerHTML = items.map(it => `
-                <article class="s-card">
-                    <div class="s-top">
-                        <div class="s-icn" aria-hidden="true">💠</div>
-                        <h3 class="s-title">${it.title}</h3>
-                    </div>
-                    <p class="s-desc">${it.desc}</p>
-                </article>`).join('');
-        })();
-    </script>
-
-    <script>
-        (function(){
-            const p = new URLSearchParams(location.search);
-            const ph = p.get('phone'); if(ph){ document.getElementById('phone').textContent = ph; document.getElementById('telLink').href = 'tel:' + ph.replace(/\s+/g,''); }
-            const em = p.get('email'); if(em){ document.getElementById('email').textContent = em; document.getElementById('mailLink').href = 'mailto:' + em; }
-            const addr = p.get('address'); if(addr){ document.getElementById('address').textContent = addr; }
-            function setSocial(id,key,build){ const raw = p.get(key); const el = document.getElementById(id); if(!el) return; if(!raw){el.hidden = true; return;} el.hidden = false; el.href = /^https?:\/\//i.test(raw) ? raw : build(raw.replace(/^@/,'')); }
-            setSocial('igLink','IG',h => 'https://instagram.com/' + h);
-            setSocial('xLink','X',h => 'https://twitter.com/' + h);
-            setSocial('fbLink','FB',h => 'https://facebook.com/' + h);
-            setSocial('liLink','LI',h => 'https://linkedin.com/in/' + h);
-
-            // simple form stub (just a UX success toast)
-            const f = document.getElementById('contact-form');
-            if(f){ f.addEventListener('submit',e => { e.preventDefault(); alert('Thanks — we\'ll get back to you shortly.'); f.reset(); }); }
-        })();
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(location.search);
-            const data = {
-                name: params.get('name') || (window.EVO_DATA && EVO_DATA.name) || 'Dr Alex Morgan',
-                specialty: params.get('specialty') || (window.EVO_DATA && EVO_DATA.specialty) || 'General Practitioner',
-                tagline: params.get('tagline') || (window.EVO_DATA && EVO_DATA.tagline) || 'Same-day, trusted care',
-                cta: params.get('cta') || (window.EVO_DATA && EVO_DATA.cta) || 'Book Appointment'
-            };
-            document.querySelectorAll('[data-token]').forEach(el => {
-                const key = el.dataset.token;
-                if (data[key]) el.textContent = data[key];
-            });
-
-            // Mirror into SEO spans if present
-            const seoName = document.getElementById('dr-name-seo');
-            const seoSpec = document.getElementById('specialty-seo');
-            if (seoName) seoName.textContent = data.name;
-            if (seoSpec) seoSpec.textContent = data.specialty;
-        });
     </script>
 </body>
 </html>
