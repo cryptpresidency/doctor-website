@@ -195,35 +195,250 @@
 
 
         .hero {
+            position: relative;
             min-height: 52vh;
             display: grid;
             place-items: center;
-            text-align: center;
-            background: linear-gradient(180deg, #e9f3fb 0%, #ffffff 60%);
-            padding: 48px 16px;
+            color: #0d1b2a;
         }
 
-        .hero::before {
-            content: "";
+        .hero-bg {
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.15) 40%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(255,255,255,.85), rgba(255,255,255,.98)), url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+            filter: saturate(105%) contrast(102%);
+        }
+
+        .hero-inner {
+            position: relative;
+            text-align: center;
+            padding: 56px 16px;
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: clamp(28px, 5vw, 44px);
+            margin: 0;
+        }
+
+        .hero-sub {
+            font-weight: 700;
             opacity: .8;
+            margin: .35rem 0 .25rem;
         }
 
-        .hero.has-bg {
-            color: #fff;
-            background-size: cover;
-            background-position: center;
-            background-image: var(--hero-bg);
+        .hero-tag {
+            opacity: .8;
+            margin: .25rem 0 1rem;
         }
 
-        .hero .stack {
+        .hero-cta {
             display: flex;
-            flex-direction: column;
-            gap: 14px;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #e7edf4;
+        }
+
+        .btn-primary {
+            background: #2a7bb5;
+            color: #fff;
+            border-color: #2a7bb5;
+            box-shadow: 0 6px 24px rgba(42,123,181,.22);
+        }
+
+        .btn-ghost {
+            background: #fff;
+            color: #0d1b2a;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .section {
+            padding: 56px 0;
+        }
+
+        .section-head h2 {
+            font-size: clamp(22px, 3.2vw, 28px);
+            margin: 0 0 18px;
+        }
+
+        .s-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        @media (min-width: 720px) {
+            .s-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .s-card {
+            background: #fff;
+            border: 1px solid #e7edf4;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 8px 24px rgba(2,12,27,.06);
+        }
+
+        .s-top {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .s-icn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: #eaf4fb;
+        }
+
+        .s-title {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .s-desc {
+            opacity: .85;
+            margin: .25rem 0 0;
+        }
+
+        .t-wrap {
+            position: relative;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .t-track {
+            overflow: hidden;
+        }
+
+        .t-slide {
+            min-height: 140px;
+            padding: 20px;
+            border: 1px solid #e7edf4;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(2,12,27,.06);
+        }
+
+        .t-quote {
+            margin: 0 0 10px;
+        }
+
+        .t-meta {
+            opacity: .75;
+            font-weight: 600;
+        }
+
+        .t-nav {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #e7edf4;
+            background: #fff;
+        }
+
+        .t-nav:hover {
+            transform: translateY(-1px);
+        }
+
+        .faq-item {
+            border: 1px solid #e7edf4;
+            border-radius: 14px;
+            background: #fff;
+            margin: 10px 0;
+        }
+
+        .faq-q {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: 0;
+            padding: 14px 16px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-a {
+            padding: 0 16px 14px 16px;
+            display: none;
+        }
+
+        .faq-item.open .faq-a {
+            display: block;
+        }
+
+        .faq-plus {
+            transition: transform .2s;
+        }
+
+        .faq-item.open .faq-plus {
+            transform: rotate(45deg);
+        }
+
+        .contact-wrap {
+            display: grid;
+            gap: 18px;
+        }
+
+        @media (min-width: 900px) {
+            .contact-wrap {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e7edf4;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 8px 24px rgba(2,12,27,.06);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .c-icon {
+            fill: #2a7bb5;
+        }
+
+        .c-form {
+            display: grid;
+            gap: 10px;
+        }
+
+        .c-form input, .c-form textarea {
+            border: 1px solid #dde7ef;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .contact-icons a {
+            margin-right: 10px;
         }
 
         /* Cards */
@@ -510,11 +725,47 @@
     <main id="main">
         <div class="container">
             <section id="hero" class="hero">
-                <div class="stack">
-                    <h1><span id="dr-name"></span></h1>
-                    <p class="subtitle"><span id="specialty"></span></p>
-                    <p class="tagline"><span id="tagline"></span></p>
-                    <a href="" class="btn btn-lg"><span id="cta-label"></span></a>
+                <div class="hero-bg" role="img" aria-label="Clinic hero image"></div>
+                <div class="hero-inner container">
+                    <h1 id="dr-name" class="hero-title"><span data-token="name">{{DR_NAME}}</span></h1>
+                    <p id="specialty" class="hero-sub"><span data-token="specialty">{{SPECIALTY}}</span></p>
+                    <p id="tagline" class="hero-tag"><span data-token="tagline">{{TAGLINE}}</span></p>
+                    <div class="hero-cta">
+                        <a id="cta" class="btn btn-primary" href="#contact"><span data-token="cta">{{CTA_LABEL}}</span></a>
+                        <a class="btn btn-ghost" href="#faq">FAQs</a>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="services" class="section">
+                <div class="container">
+                    <div class="section-head">
+                        <h2>Services</h2>
+                    </div>
+                    <div id="services-grid" class="s-grid" aria-live="polite"></div>
+                </div>
+            </section>
+            
+            <section id="testimonials" class="section alt">
+                <h2>What Patients Say</h2>
+                <div class="t-grid">
+                    <article class="t-card reveal">
+                        <p class="quote">"Professional and kind throughout my visit."</p>
+                        <p class="meta">★★★★★ — Sarah W.</p>
+                    </article>
+                    <article class="t-card reveal">
+                        <p class="quote">"Explained everything clearly and put me at ease."</p>
+                        <p class="meta">★★★★★ — James L.</p>
+                    </article>
+                </div>
+            </section>
+            
+            <section id="faq" class="section">
+                <div class="container">
+                    <div class="section-head">
+                        <h2>FAQs</h2>
+                    </div>
+                    <div id="faq-list" class="faq"></div>
                 </div>
             </section>
             
@@ -586,30 +837,42 @@
             </section>
             
             <section id="contact" class="section">
-                <div class="container">
-                    <div class="card">
-                        <div class="section-head">
-                            <h2>Contact</h2>
-                        </div>
-                        <div class="contact-grid">
-                            <div class="contact-item">
-                                <strong>Address:</strong> <span id="address"></span>
+                <div class="container contact-wrap">
+                    <div class="contact-left">
+                        <div class="card">
+                            <div class="section-head">
+                                <h2>Contact</h2>
                             </div>
                             <div class="contact-item">
-                                <svg class="c-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <svg class="c-icon" viewBox="0 0 24 24" width="18" height="18">
                                     <path d="M6.6 10.8c1.1 2.1 2.9 3.9 5 5l1.6-1.6c.2-.2.5-.3.8-.2 1 .3 2 .5 3.1.5.4 0 .8.3.8.8v2.5c0 .4-.3.8-.8.8C10.5 18.6 5.4 13.5 5.4 7.2c0-.4.3-.8.8-.8h2.5c.4 0 .8.3.8.8 0 1.1.2 2.1.5 3.1.1.3 0 .6-.2.8l-1.6 1.7z"/>
                                 </svg>
-                                <strong>Phone:</strong> <a id="telLink" href="tel:{{PHONE}}"><span id="phone">{{PHONE}}</span></a>
+                                <a id="telLink" href="#"><span id="phone">020 1234 5678</span></a>
                             </div>
                             <div class="contact-item">
-                                <svg class="c-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <svg class="c-icon" viewBox="0 0 24 24" width="18" height="18">
                                     <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                                 </svg>
-                                <strong>Email:</strong> <a id="mailLink" href="mailto:{{EMAIL}}"><span id="email">{{EMAIL}}</span></a>
+                                <a id="mailLink" href="#"><span id="email">clinic@example.com</span></a>
                             </div>
                             <div class="contact-item">
-                                <a id="mapLink" href="#" rel="noopener">Get Directions</a>
+                                <span id="address">123 Clinic Road, London</span>
                             </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="contact-right">
+                        <div class="card">
+                            <div class="section-head">
+                                <h2>Request an Appointment</h2>
+                            </div>
+                            <form id="contact-form" class="c-form">
+                                <input type="text" name="name" placeholder="Your name" required>
+                                <input type="email" name="email" placeholder="Email" required>
+                                <input type="tel" name="phone" placeholder="Phone">
+                                <textarea name="message" rows="4" placeholder="How can we help?"></textarea>
+                                <button class="btn btn-primary" type="submit">Send Request</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -900,6 +1163,81 @@
             // Start after minimal paint
             setTimeout(type, 150);
         })();
+    </script>
+
+    <script>
+        (function(){
+            const p = new URLSearchParams(location.search);
+            const name = p.get('name'); if(name) document.getElementById('dr-name').textContent = name;
+            const spec = p.get('specialty'); if(spec) document.getElementById('specialty').textContent = spec;
+            const tag = p.get('tagline'); if(tag) document.getElementById('tagline').textContent = tag;
+            const heroImg = p.get('hero'); if(heroImg){ document.querySelector('.hero-bg').style.backgroundImage = `linear-gradient(to bottom, rgba(255,255,255,.85), rgba(255,255,255,.98)), url('${heroImg}')`; }
+        })();
+    </script>
+
+    <script>
+        (function(){
+            const host = document.getElementById('services-grid'); if(!host) return;
+            function fromParams(){
+                const raw = new URLSearchParams(location.search).get('SERVICES'); if(!raw) return null;
+                // Format: title::desc|title::desc|...
+                return raw.split('|').map(s => {const [t,d] = (s.split('::')); return {title: t || '', desc: d || ''}});
+            }
+            let items = (window.EVO_DATA && Array.isArray(EVO_DATA.services) && EVO_DATA.services.length) ? EVO_DATA.services : fromParams();
+            if(!items){ items = [
+                {title: 'Initial Consultation', desc: 'A comprehensive first appointment to assess your needs.'},
+                {title: 'Follow-up Appointment', desc: 'Ongoing care and progress reviews.'},
+                {title: 'Video Consultation', desc: 'Convenient and secure telehealth sessions.'}
+            ]; }
+            host.innerHTML = items.map(it => `
+                <article class="s-card">
+                    <div class="s-top">
+                        <div class="s-icn" aria-hidden="true">💠</div>
+                        <h3 class="s-title">${it.title}</h3>
+                    </div>
+                    <p class="s-desc">${it.desc}</p>
+                </article>`).join('');
+        })();
+    </script>
+
+    <script>
+        (function(){
+            const p = new URLSearchParams(location.search);
+            const ph = p.get('phone'); if(ph){ document.getElementById('phone').textContent = ph; document.getElementById('telLink').href = 'tel:' + ph.replace(/\s+/g,''); }
+            const em = p.get('email'); if(em){ document.getElementById('email').textContent = em; document.getElementById('mailLink').href = 'mailto:' + em; }
+            const addr = p.get('address'); if(addr){ document.getElementById('address').textContent = addr; }
+            function setSocial(id,key,build){ const raw = p.get(key); const el = document.getElementById(id); if(!el) return; if(!raw){el.hidden = true; return;} el.hidden = false; el.href = /^https?:\/\//i.test(raw) ? raw : build(raw.replace(/^@/,'')); }
+            setSocial('igLink','IG',h => 'https://instagram.com/' + h);
+            setSocial('xLink','X',h => 'https://twitter.com/' + h);
+            setSocial('fbLink','FB',h => 'https://facebook.com/' + h);
+            setSocial('liLink','LI',h => 'https://linkedin.com/in/' + h);
+
+            // simple form stub (just a UX success toast)
+            const f = document.getElementById('contact-form');
+            if(f){ f.addEventListener('submit',e => { e.preventDefault(); alert('Thanks — we\'ll get back to you shortly.'); f.reset(); }); }
+        })();
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(location.search);
+            const data = {
+                name: params.get('name') || (window.EVO_DATA && EVO_DATA.name) || 'Dr Alex Morgan',
+                specialty: params.get('specialty') || (window.EVO_DATA && EVO_DATA.specialty) || 'General Practitioner',
+                tagline: params.get('tagline') || (window.EVO_DATA && EVO_DATA.tagline) || 'Same-day, trusted care',
+                cta: params.get('cta') || (window.EVO_DATA && EVO_DATA.cta) || 'Book Appointment'
+            };
+            document.querySelectorAll('[data-token]').forEach(el => {
+                const key = el.dataset.token;
+                if (data[key]) el.textContent = data[key];
+            });
+
+            // Mirror into SEO spans if present
+            const seoName = document.getElementById('dr-name-seo');
+            const seoSpec = document.getElementById('specialty-seo');
+            if (seoName) seoName.textContent = data.name;
+            if (seoSpec) seoSpec.textContent = data.specialty;
+        });
     </script>
 </body>
 </html>
