@@ -27,7 +27,7 @@
             --bg: #ffffff;
             --surface: #f8fafc;
             --ink: #0b1220;
-            --muted: #55627a;
+            --muted: #667085;
             --primary: #2a7bb5;
             --primary-ink: #ffffff;
             --ring: #7dd3fc;
@@ -38,8 +38,10 @@
             --space-4: 24px;
             --space-5: 32px;
             --radius: 14px;
-            --shadow: 0 8px 30px rgba(3,7,18,.08);
+            --shadow: 0 10px 30px rgba(3,7,18,.08);
             --hero-bg: url('');
+            --card: #ffffff;
+            --card-border: #e7edf4;
         }
 
         html {
@@ -60,8 +62,8 @@
         }
 
         section {
-            padding: calc(var(--space-5) * 1) 0;
-            border-top: 1px solid #eaeef4;
+            padding: 56px 0;
+            border-top: 1px solid #eef2f7;
         }
 
         #hero {
@@ -228,20 +230,49 @@
             align-items: center;
         }
 
+        /* Cards */
         .card {
-            background: var(--surface);
-            border: 1px solid #e7edf4;
+            background: var(--card);
+            border: 1px solid var(--card-border);
             border-radius: var(--radius);
             padding: var(--space-5);
             box-shadow: var(--shadow);
         }
 
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 var(--space-3);
+        }
+
+        .section-head h2 {
+            margin: 0;
+            font-size: clamp(20px, 2.2vw, 26px);
+            line-height: 1.25;
+        }
+
+        .section-sub {
+            color: var(--muted);
+            margin: 0 0 var(--space-4);
+        }
+
+        /* Two-column layout for Services on desktop */
+        @media (min-width: 900px) {
+            #services .columns {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-5);
+            }
+        }
+
+        /* Lists */
         ul {
             margin: 0;
             padding-left: 22px;
         }
 
-        ul li {
+        li {
             margin: 8px 0;
         }
 
@@ -249,17 +280,67 @@
             color: var(--muted);
         }
 
-        .contact-info {
-            background-color: var(--surface);
-            padding: var(--space-5);
+        /* Contact list tidy */
+        .contact-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        @media (min-width: 700px) {
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .contact-item a {
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-item a:focus {
+            outline: 2px solid var(--ring);
+            outline-offset: 3px;
+            border-radius: 8px;
+        }
+
+        .t-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .t-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .t-card {
+            background: #fff;
+            border: 1px solid var(--card-border);
             border-radius: var(--radius);
-            border: 1px solid #e7edf4;
+            padding: 20px;
             box-shadow: var(--shadow);
         }
 
-        .contact-info p {
-            margin: 0.5rem 0;
+        .t-quote {
+            margin: 0 0 10px;
+            color: var(--ink);
         }
+
+        .t-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .t-stars {
+            letter-spacing: 1px;
+        }
+
+
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -330,27 +411,71 @@
             </section>
             
             <section id="about" class="section">
-                <h2>About</h2>
-                <p class="muted">Brief bio goes here. This will be AI-generated later.</p>
-                <ul id="credentials">
-                    {{CREDENTIALS_LIST}}
-                </ul>
+                <div class="container">
+                    <div class="card">
+                        <div class="section-head">
+                            <h2>About</h2>
+                        </div>
+                        <p class="section-sub">Brief bio goes here. This will be AI-generated later.</p>
+                        <ul id="credentials">
+                            {{CREDENTIALS_LIST}}
+                        </ul>
+                    </div>
+                </div>
             </section>
             
             <section id="services" class="section">
-                <h2>Services</h2>
-                <ul id="services">
-                    {{SERVICES_LIST}}
-                </ul>
+                <div class="container">
+                    <div class="card">
+                        <div class="section-head">
+                            <h2>Services</h2>
+                        </div>
+                        <div class="columns">
+                            <ul id="services">
+                                {{SERVICES_LIST}}
+                            </ul>
+                            <ul id="credentials">
+                                {{CREDENTIALS_LIST}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="testimonials" class="section">
+                <div class="container">
+                    <div class="card">
+                        <div class="section-head">
+                            <h2>Testimonials</h2>
+                        </div>
+                        <div id="testimonials-list" class="t-grid" aria-live="polite" aria-busy="false">
+                            <!-- Items will be injected here -->
+                        </div>
+                    </div>
+                </div>
             </section>
             
             <section id="contact" class="section">
-                <h2>Contact</h2>
-                <div class="contact-info">
-                    <p><strong>Address:</strong> <span id="address"></span></p>
-                    <p><strong>Phone:</strong> <a id="telLink" href=""><span id="phone"></span></a></p>
-                    <p><strong>Email:</strong> <a id="mailLink" href=""><span id="email"></span></a></p>
-                    <p><a id="mapLink" href="#" rel="noopener">Get Directions</a></p>
+                <div class="container">
+                    <div class="card">
+                        <div class="section-head">
+                            <h2>Contact</h2>
+                        </div>
+                        <div class="contact-grid">
+                            <div class="contact-item">
+                                <strong>Address:</strong> <span id="address"></span>
+                            </div>
+                            <div class="contact-item">
+                                <strong>Phone:</strong> <a id="telLink" href=""><span id="phone"></span></a>
+                            </div>
+                            <div class="contact-item">
+                                <strong>Email:</strong> <a id="mailLink" href=""><span id="email"></span></a>
+                            </div>
+                            <div class="contact-item">
+                                <a id="mapLink" href="#" rel="noopener">Get Directions</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -504,6 +629,55 @@
             document.querySelector('meta[name="description"]').setAttribute('content', tagline);
             document.querySelector('meta[property="og:description"]').setAttribute('content', tagline);
             document.querySelector('meta[name="twitter:description"]').setAttribute('content', tagline);
+        })();
+    </script>
+
+    <script>
+        (function(){
+            // Source testimonials from window.EVO_DATA.testimonials (array of {quote, name, rating?})
+            // Fallback: URL param TESTIMONIALS as a pipe-separated list of "quote - name - rating"
+            // Example: ?TESTIMONIALS=Great%20care%20-%20Aisha%20K.%20-%205|Very%20thorough%20-%20Tom%20R.%20-%204
+
+            function parseFromParams(){
+                var s = new URLSearchParams(location.search).get('TESTIMONIALS');
+                if(!s) return null;
+                return s.split('|').map(function(chunk){
+                    var parts = chunk.split(' - ').map(function(p){ return p.trim(); });
+                    return { quote: parts[0] || '', name: parts[1] || 'Patient', rating: parseInt(parts[2] || '5', 10) || 5 };
+                }).filter(function(t){ return t.quote; });
+            }
+
+            var list = document.getElementById('testimonials-list');
+            if(!list) return;
+
+            var items = (window.EVO_DATA && Array.isArray(window.EVO_DATA.testimonials) && window.EVO_DATA.testimonials.length)
+                ? window.EVO_DATA.testimonials
+                : parseFromParams();
+
+            // Graceful fallback if nothing provided
+            if(!items || !items.length){
+                items = [
+                    {quote:'Professional and kind throughout my visit.', name:'Sarah W.', rating:5},
+                    {quote:'Explained everything clearly and put me at ease.', name:'James L.', rating:5}
+                ];
+            }
+
+            // Render
+            list.setAttribute('aria-busy','true');
+            list.innerHTML = items.map(function(t){
+                var stars = '★★★★★'.slice(0, Math.max(0, Math.min(5, t.rating || 5)));
+                return (
+                    '<article class="t-card" role="article">' +
+                        '<p class="t-quote">"' + (t.quote || '') + '"</p>' +
+                        '<div class="t-meta">' +
+                            '<span class="t-stars" aria-label="' + (t.rating || 5) + ' out of 5 stars">' + stars + '</span>' +
+                            '<span>·</span>' +
+                            '<span>' + (t.name || 'Patient') + '</span>' +
+                        '</div>' +
+                    '</article>'
+                );
+            }).join('');
+            list.setAttribute('aria-busy','false');
         })();
     </script>
 </body>
