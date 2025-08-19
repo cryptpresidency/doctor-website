@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{TAGLINE}}">
-    <link rel="canonical" href="{{CTA_URL}}">
-    <title><span data-token="DR_NAME">{{DR_NAME}}</span> - <span data-token="SPECIALTY">{{SPECIALTY}}</span></title>
+    <meta name="description" content="">
+    <link rel="canonical" href="">
+    <title><span id="dr-name"></span> - <span id="specialty"></span></title>
 
     <!-- Open Graph -->
-    <meta property="og:title" content="{{DR_NAME}} — {{SPECIALTY}}">
-    <meta property="og:description" content="{{TAGLINE}}">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{CTA_URL}}">
-    <meta property="og:image" content="{{HERO_IMAGE}}">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{DR_NAME}} — {{SPECIALTY}}">
-    <meta name="twitter:description" content="{{TAGLINE}}">
-    <meta name="twitter:image" content="{{HERO_IMAGE}}">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
     <style>
         :root {
             --bg: #ffffff;
@@ -269,7 +269,7 @@
         <div class="container header-row">
             <div class="brand">
                 <div class="logo-circle" aria-hidden="true"></div>
-                <span class="brand-name"><span data-token="DR_NAME">{{DR_NAME}}</span></span>
+                <span class="brand-name"><span id="dr-name"></span></span>
             </div>
             <nav>
                 <a href="#hero">Home</a>
@@ -285,10 +285,10 @@
         <div class="container">
             <section id="hero" class="hero">
                 <div class="container hero-inner">
-                    <h1><span data-token="DR_NAME">{{DR_NAME}}</span></h1>
-                    <p class="subtitle"><span data-token="SPECIALTY">{{SPECIALTY}}</span></p>
-                    <p class="tagline"><span data-token="TAGLINE">{{TAGLINE}}</span></p>
-                    <a href="{{CTA_URL}}" data-token-href="CTA_URL" class="btn"><span data-token="CTA_LABEL">{{CTA_LABEL}}</span></a>
+                    <h1><span id="dr-name"></span></h1>
+                    <p class="subtitle"><span id="specialty"></span></p>
+                    <p class="tagline"><span id="tagline"></span></p>
+                    <a href="" class="btn"><span id="cta-label"></span></a>
                 </div>
             </section>
             
@@ -310,9 +310,9 @@
             <section id="contact" class="section">
                 <h2>Contact</h2>
                 <div class="contact-info">
-                    <p><strong>Address:</strong> <span data-token="ADDRESS">{{ADDRESS}}</span></p>
-                    <p><strong>Phone:</strong> <a id="telLink" href="tel:{{PHONE}}"><span data-token="PHONE">{{PHONE}}</span></a></p>
-                    <p><strong>Email:</strong> <a id="mailLink" href="mailto:{{EMAIL}}"><span data-token="EMAIL">{{EMAIL}}</span></a></p>
+                    <p><strong>Address:</strong> <span id="address"></span></p>
+                    <p><strong>Phone:</strong> <a id="telLink" href=""><span id="phone"></span></a></p>
+                    <p><strong>Email:</strong> <a id="mailLink" href=""><span id="email"></span></a></p>
                     <p><a id="mapLink" href="#" rel="noopener">Get Directions</a></p>
                 </div>
             </section>
@@ -321,7 +321,7 @@
     
     <footer>
         <div class="container">
-            <p>&copy; 2025 <span data-token="DR_NAME">{{DR_NAME}}</span>. All rights reserved.</p>
+            <p>&copy; 2025 <span id="dr-name"></span>. All rights reserved.</p>
         </div>
     </footer>
 
@@ -407,6 +407,69 @@
             if (bgUrl) {
                 document.documentElement.style.setProperty('--hero-bg', "url('" + bgUrl + "')");
                 document.getElementById('hero').classList.add('has-bg');
+            }
+        })();
+    </script>
+
+    <script>
+        (function(){
+            // Read URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Map of parameter names to element IDs
+            const paramMap = {
+                'name': 'dr-name',
+                'specialty': 'specialty', 
+                'tagline': 'tagline',
+                'cta': 'cta-label',
+                'address': 'address',
+                'phone': 'phone',
+                'email': 'email'
+            };
+            
+            // Update text content for each parameter
+            Object.keys(paramMap).forEach(param => {
+                const value = urlParams.get(param);
+                const elementId = paramMap[param];
+                const element = document.getElementById(elementId);
+                
+                if (value && element) {
+                    element.textContent = value;
+                }
+            });
+            
+            // Update href attributes for phone and email links
+            const phone = urlParams.get('phone');
+            const email = urlParams.get('email');
+            
+            if (phone) {
+                const telLink = document.getElementById('telLink');
+                if (telLink) {
+                    telLink.href = 'tel:' + phone;
+                }
+            }
+            
+            if (email) {
+                const mailLink = document.getElementById('mailLink');
+                if (mailLink) {
+                    mailLink.href = 'mailto:' + email;
+                }
+            }
+            
+            // Update meta tags
+            const name = urlParams.get('name');
+            const specialty = urlParams.get('specialty');
+            const tagline = urlParams.get('tagline');
+            
+            if (name && specialty) {
+                document.querySelector('meta[property="og:title"]').setAttribute('content', name + ' — ' + specialty);
+                document.querySelector('meta[name="twitter:title"]').setAttribute('content', name + ' — ' + specialty);
+            }
+            
+            if (tagline) {
+                document.querySelector('meta[name="description"]').setAttribute('content', tagline);
+                document.querySelector('meta[property="og:description"]').setAttribute('content', tagline);
+                document.querySelector('meta[name="twitter:description"]').setAttribute('content', tagline);
             }
         })();
     </script>
