@@ -118,25 +118,7 @@
             transform: translateY(-1px);
         }
 
-        #theme-toggle.btn {
-            padding: 8px 10px;
-            font-weight: 600;
-            border-radius: 10px;
-            box-shadow: none;
-            opacity: .85;
-        }
 
-        #theme-toggle.btn:hover {
-            opacity: 1;
-            transform: none;
-        }
-
-        @media (min-width: 900px) {
-            #theme-toggle.btn {
-                padding: 6px 10px;
-                font-size: 14px;
-            }
-        }
 
         a {
             color: var(--primary);
@@ -210,13 +192,7 @@
             opacity: 1;
         }
 
-        body.dark {
-            --bg: #0f172a;
-            --ink: #f1f5f9;
-            --muted: #94a3b8;
-            --primary: #38bdf8;
-            --accent: #7dd3fc;
-        }
+
 
         .hero {
             min-height: 52vh;
@@ -454,9 +430,7 @@
                 order: 2;
             }
             
-            #theme-toggle {
-                order: 3;
-            }
+
         }
 
         @media (max-width: 420px) {
@@ -468,9 +442,55 @@
                 gap: 12px;
             }
         }
+
+        #evo-loader {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            background: #ffffff;
+            z-index: 9999;
+            transition: opacity .28s ease, visibility .28s ease;
+        }
+
+        #evo-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .tw {
+            font-weight: 800;
+            font-size: clamp(22px, 4.5vw, 36px);
+            color: var(--ink);
+        }
+
+        .tw-cursor {
+            display: inline-block;
+            margin-left: 4px;
+            opacity: .9;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tw-cursor {
+                animation: none;
+            }
+        }
     </style>
 </head>
 <body>
+    <div id="evo-loader" aria-live="polite" aria-busy="true">
+        <div class="tw">
+            <span id="tw-prefix">Dr&nbsp;</span><span id="tw-name"></span><span class="tw-cursor" aria-hidden="true">|</span>
+        </div>
+        <div class="tw-sub muted">Preparing your page…</div>
+    </div>
     <a href="#main" class="skip">Skip to content</a>
     <header>
         <div class="container header-row">
@@ -484,7 +504,6 @@
                 <a href="#services">Services</a>
                 <a href="#contact">Contact</a>
             </nav>
-            <button id="theme-toggle" class="btn">Toggle Theme</button>
         </div>
     </header>
     
@@ -627,11 +646,7 @@
         </div>
     </footer>
 
-    <script>
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            document.body.classList.toggle('dark');
-        });
-    </script>
+
 
     <script>
         (function(){
@@ -856,6 +871,34 @@
             setSocial('xLink',  'X',   function(h){ return 'https://twitter.com/'   + h.replace(/^@/,''); });
             setSocial('fbLink', 'FB',  function(h){ return 'https://facebook.com/'  + h.replace(/^@/,''); });
             setSocial('liLink', 'LI',  function(h){ return 'https://linkedin.com/in/'+ h.replace(/^@/,''); });
+        })();
+    </script>
+
+    <script>
+        (function(){
+            // Determine the name
+            var params = new URLSearchParams(location.search);
+            var urlName = params.get('name') || '';
+            var heroNameEl = document.getElementById('dr-name');
+            var baseName = (urlName || (heroNameEl ? heroNameEl.textContent : '') || 'Your Doctor').replace(/^Dr\.?\s+/i,'').trim();
+
+            // Typewriter
+            var out = document.getElementById('tw-name');
+            var loader = document.getElementById('evo-loader');
+            if(!out || !loader) return;
+
+            var i = 0, txt = baseName, speed = 35;
+            var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if(reduced) { out.textContent = txt; hideSoon(); return; }
+
+            function type(){
+                if(i < txt.length){ out.textContent += txt.charAt(i++); setTimeout(type, speed); }
+                else { hideSoon(); }
+            }
+            function hideSoon(){ setTimeout(function(){ loader.classList.add('hidden'); }, 250); }
+
+            // Start after minimal paint
+            setTimeout(type, 150);
         })();
     </script>
 </body>
