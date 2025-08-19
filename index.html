@@ -36,6 +36,7 @@
             --space-5: 32px;
             --radius: 14px;
             --shadow: 0 8px 30px rgba(3,7,18,.08);
+            --hero-bg: url('');
         }
 
         html {
@@ -132,6 +133,31 @@
             padding: var(--space-3) 0;
         }
 
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+        }
+
+        .logo-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #89cff0, #2a7bb5);
+        }
+
+        .brand-name {
+            letter-spacing: .2px;
+        }
+
         header nav {
             display: flex;
             gap: 18px;
@@ -159,14 +185,44 @@
         }
 
         .hero {
+            position: relative;
+            min-height: 48vh;
+            display: grid;
+            align-items: center;
+            background: var(--surface);
             text-align: center;
             border-top: none;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.15) 40%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+            opacity: .8;
+        }
+
+        .hero.has-bg {
+            color: #fff;
+            background-size: cover;
+            background-position: center;
+            background-image: var(--hero-bg);
+        }
+
+        .hero .hero-inner {
+            position: relative;
+            padding: calc(var(--space-5) * 1.2) 0;
         }
 
         .hero .subtitle {
             color: var(--muted);
             font-size: 1.1rem;
             margin-bottom: 1rem;
+        }
+
+        .hero.has-bg .muted {
+            color: rgba(255,255,255,.9);
         }
 
         .hero .tagline {
@@ -210,8 +266,11 @@
 <body>
     <a href="#main" class="skip">Skip to content</a>
     <header>
-        <div class="container">
-            <h1><span data-token="DR_NAME">{{DR_NAME}}</span></h1>
+        <div class="container header-row">
+            <div class="brand">
+                <div class="logo-circle" aria-hidden="true"></div>
+                <span class="brand-name"><span data-token="DR_NAME">{{DR_NAME}}</span></span>
+            </div>
             <nav>
                 <a href="#hero">Home</a>
                 <a href="#about">About</a>
@@ -224,11 +283,13 @@
     
     <main id="main">
         <div class="container">
-            <section id="hero" class="section hero">
-                <h1><span data-token="DR_NAME">{{DR_NAME}}</span></h1>
-                <p class="subtitle"><span data-token="SPECIALTY">{{SPECIALTY}}</span></p>
-                <p class="tagline"><span data-token="TAGLINE">{{TAGLINE}}</span></p>
-                <a href="{{CTA_URL}}" data-token-href="CTA_URL" class="btn"><span data-token="CTA_LABEL">{{CTA_LABEL}}</span></a>
+            <section id="hero" class="hero">
+                <div class="container hero-inner">
+                    <h1><span data-token="DR_NAME">{{DR_NAME}}</span></h1>
+                    <p class="subtitle"><span data-token="SPECIALTY">{{SPECIALTY}}</span></p>
+                    <p class="tagline"><span data-token="TAGLINE">{{TAGLINE}}</span></p>
+                    <a href="{{CTA_URL}}" data-token-href="CTA_URL" class="btn"><span data-token="CTA_LABEL">{{CTA_LABEL}}</span></a>
+                </div>
             </section>
             
             <section id="about" class="section">
@@ -336,6 +397,17 @@
 
             fillList('services',    parseList('SERVICES'),    ['General consultation','Health check','Follow-up visit']);
             fillList('credentials', parseList('CREDENTIALS'), ['Board-certified','Member of GMC','10+ years experience']);
+        })();
+    </script>
+
+    <script>
+        (function(){
+            // Set hero background if BG_URL is provided
+            var bgUrl = (window.EVO_DATA && window.EVO_DATA.BG_URL) ? window.EVO_DATA.BG_URL : new URLSearchParams(location.search).get('BG_URL');
+            if (bgUrl) {
+                document.documentElement.style.setProperty('--hero-bg', "url('" + bgUrl + "')");
+                document.getElementById('hero').classList.add('has-bg');
+            }
         })();
     </script>
 </body>
