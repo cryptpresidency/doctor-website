@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <link rel="canonical" href="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <title><span id="dr-name"></span> - <span id="specialty"></span></title>
 
     <!-- Open Graph -->
@@ -45,7 +48,7 @@
 
         body {
             margin: 0;
-            font: 400 16px/1.7 system-ui, Segoe UI, Roboto, Inter;
+            font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
             background: var(--bg);
             color: var(--ink);
         }
@@ -66,17 +69,15 @@
         }
 
         h1 {
-            font-size: clamp(32px, 4.5vw, 54px);
-            line-height: 1.15;
+            font-size: clamp(28px, 5vw, 44px);
         }
 
         h2 {
-            font-size: clamp(20px, 2.4vw, 28px);
-            line-height: 1.25;
+            font-size: clamp(18px, 3vw, 24px);
         }
 
         p, li {
-            font-size: clamp(15px, 1.2vw, 17px);
+            font-size: clamp(15px, 2.2vw, 17px);
         }
 
         .muted {
@@ -102,6 +103,17 @@
         .btn:focus {
             outline: 2px solid var(--ring);
             outline-offset: 3px;
+        }
+
+        .btn-lg {
+            padding: 14px 22px;
+            border-radius: 14px;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(2,12,27,.08);
+        }
+
+        .btn-lg:hover {
+            transform: translateY(-1px);
         }
 
         a {
@@ -185,13 +197,12 @@
         }
 
         .hero {
-            position: relative;
-            min-height: 48vh;
+            min-height: 52vh;
             display: grid;
-            align-items: center;
-            background: var(--surface);
+            place-items: center;
             text-align: center;
-            border-top: none;
+            background: linear-gradient(180deg, #e9f3fb 0%, #ffffff 60%);
+            padding: 48px 16px;
         }
 
         .hero::before {
@@ -210,23 +221,11 @@
             background-image: var(--hero-bg);
         }
 
-        .hero .hero-inner {
-            position: relative;
-            padding: calc(var(--space-5) * 1.2) 0;
-        }
-
-        .hero .subtitle {
-            color: var(--muted);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero.has-bg .muted {
-            color: rgba(255,255,255,.9);
-        }
-
-        .hero .tagline {
-            margin-bottom: 2rem;
+        .hero .stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
         }
 
         .card {
@@ -261,6 +260,44 @@
         .contact-info p {
             margin: 0.5rem 0;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--space-3);
+            }
+            
+            .hero {
+                padding: 32px 16px;
+            }
+            
+            .header-row {
+                flex-direction: column;
+                gap: var(--space-3);
+            }
+            
+            .brand {
+                order: 1;
+            }
+            
+            nav {
+                order: 2;
+            }
+            
+            #theme-toggle {
+                order: 3;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .hero {
+                padding: 24px 12px;
+            }
+            
+            .hero .stack {
+                gap: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -284,11 +321,11 @@
     <main id="main">
         <div class="container">
             <section id="hero" class="hero">
-                <div class="container hero-inner">
+                <div class="stack">
                     <h1><span id="dr-name"></span></h1>
                     <p class="subtitle"><span id="specialty"></span></p>
                     <p class="tagline"><span id="tagline"></span></p>
-                    <a href="" class="btn"><span id="cta-label"></span></a>
+                    <a href="" class="btn btn-lg"><span id="cta-label"></span></a>
                 </div>
             </section>
             
@@ -416,25 +453,26 @@
             // Read URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             
-            // Map of parameter names to element IDs
+            // Map of parameter names to element IDs with fallbacks
             const paramMap = {
-                'name': 'dr-name',
-                'specialty': 'specialty', 
-                'tagline': 'tagline',
-                'cta': 'cta-label',
-                'address': 'address',
-                'phone': 'phone',
-                'email': 'email'
+                'name': { id: 'dr-name', fallback: 'Dr Alex Morgan' },
+                'specialty': { id: 'specialty', fallback: 'General Practitioner' },
+                'tagline': { id: 'tagline', fallback: 'Same-day, trusted care' },
+                'cta': { id: 'cta-label', fallback: 'Book Appointment' },
+                'address': { id: 'address', fallback: '' },
+                'phone': { id: 'phone', fallback: '' },
+                'email': { id: 'email', fallback: '' }
             };
             
             // Update text content for each parameter
             Object.keys(paramMap).forEach(param => {
                 const value = urlParams.get(param);
-                const elementId = paramMap[param];
+                const elementId = paramMap[param].id;
+                const fallback = paramMap[param].fallback;
                 const element = document.getElementById(elementId);
                 
-                if (value && element) {
-                    element.textContent = value;
+                if (element) {
+                    element.textContent = value || fallback;
                 }
             });
             
@@ -457,20 +495,15 @@
             }
             
             // Update meta tags
-            const name = urlParams.get('name');
-            const specialty = urlParams.get('specialty');
-            const tagline = urlParams.get('tagline');
+            const name = urlParams.get('name') || 'Dr Alex Morgan';
+            const specialty = urlParams.get('specialty') || 'General Practitioner';
+            const tagline = urlParams.get('tagline') || 'Same-day, trusted care';
             
-            if (name && specialty) {
-                document.querySelector('meta[property="og:title"]').setAttribute('content', name + ' — ' + specialty);
-                document.querySelector('meta[name="twitter:title"]').setAttribute('content', name + ' — ' + specialty);
-            }
-            
-            if (tagline) {
-                document.querySelector('meta[name="description"]').setAttribute('content', tagline);
-                document.querySelector('meta[property="og:description"]').setAttribute('content', tagline);
-                document.querySelector('meta[name="twitter:description"]').setAttribute('content', tagline);
-            }
+            document.querySelector('meta[property="og:title"]').setAttribute('content', name + ' — ' + specialty);
+            document.querySelector('meta[name="twitter:title"]').setAttribute('content', name + ' — ' + specialty);
+            document.querySelector('meta[name="description"]').setAttribute('content', tagline);
+            document.querySelector('meta[property="og:description"]').setAttribute('content', tagline);
+            document.querySelector('meta[name="twitter:description"]').setAttribute('content', tagline);
         })();
     </script>
 </body>
